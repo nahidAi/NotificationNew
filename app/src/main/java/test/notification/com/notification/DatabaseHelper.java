@@ -21,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase mDataBase;
     private final Context mContext;
     private boolean mNeedUpdate = false;
-    private  String   favoriteState;
+    private String favoriteState;
 
 
     public DatabaseHelper(Context context) {
@@ -151,7 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Quote selectPersonById(int mId) {
         ArrayList<Quote> person = new ArrayList<>();
-        Cursor cursor = mDataBase.rawQuery("SELECT * FROM tbl_b_n WHERE sobject='person'and id = '"+mId+"'", null);
+        Cursor cursor = mDataBase.rawQuery("SELECT * FROM tbl_b_n WHERE sobject='person'and id = '" + mId + "'", null);
         while (cursor.moveToNext()) {
             String name = cursor.getString(cursor.getColumnIndex("name"));
             String content = cursor.getString(cursor.getColumnIndex("content"));
@@ -171,23 +171,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return person.get(0);
     }
-    public  boolean selectFavoriteState(int mId){
-        Cursor cursor = mDataBase.rawQuery("SELECT * FROM tbl_b_n WHERE id = "+mId,null);
-        while (cursor.moveToNext()){
-           favoriteState = cursor.getString(cursor.getColumnIndex("fav"));
+
+    public boolean selectFavoriteState(int mId) {
+        Cursor cursor = mDataBase.rawQuery("SELECT * FROM tbl_b_n WHERE id = " + mId, null);
+        while (cursor.moveToNext()) {
+            favoriteState = cursor.getString(cursor.getColumnIndex("fav"));
 
         }
-        if (favoriteState.equals("1")){
-            return  true;
-        }else {
-            return  false;
+        if (favoriteState.equals("1")) {
+            return true;
+        } else {
+            return false;
         }
     }
-    public  void  updateFavorite(int mId){
-        mDataBase.execSQL("UPDATE tbl_b_n SET fav = 1 WHERE id = "+mId);
+
+    public void updateFavorite(int mId) {
+        mDataBase.execSQL("UPDATE tbl_b_n SET fav = 1 WHERE id = " + mId);
 
     }
-    public  void  updateUnFavorite(int mId){
-        mDataBase.execSQL("UPDATE tbl_b_n SET fav=0 WHERE id = "+mId);
+
+    public void updateUnFavorite(int mId) {
+        mDataBase.execSQL("UPDATE tbl_b_n SET fav=0 WHERE id = " + mId);
+    }
+
+    public ArrayList<Quote> readQuoteFromDatabase() {
+        ArrayList<Quote> quoteArrayList = new ArrayList<Quote>();
+        Cursor cursor = mDataBase.rawQuery("SELECT * FROM tbl_b_n ", null);
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String content = cursor.getString(cursor.getColumnIndex("content"));
+            String more = cursor.getString(cursor.getColumnIndex("more"));
+            String imgAddress = cursor.getString(cursor.getColumnIndex("img_address"));
+            int id = cursor.getInt(cursor.getColumnIndex("id"));
+
+            Quote quote = new Quote(name, content, more, imgAddress, id);
+            quote.setName(name);
+            quote.setContent(content);
+            quote.setMore(more);
+            quote.setImgAddress(imgAddress);
+            quote.setId(id);
+            quoteArrayList.add(quote);
+
+        }
+       // Toast.makeText(context, "" + quoteArrayList.size(), Toast.LENGTH_SHORT).show();
+        return quoteArrayList;
     }
 }

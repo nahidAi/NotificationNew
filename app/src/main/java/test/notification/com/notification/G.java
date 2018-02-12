@@ -8,8 +8,8 @@ import android.graphics.Typeface;
 
 public class G extends Application{
     private  static Typeface font;
-    public static AlarmManager alarmManager;
     public static Context context;
+    public static AlarmManager alarmManager;
     @Override
     public void onCreate() {
         super.onCreate();
