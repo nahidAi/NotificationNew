@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import co.ronash.pushe.Pushe;
 import test.notification.com.notification.Adapter.AdapterFragment;
 import test.notification.com.notification.DatabaseHelper;
 import test.notification.com.notification.G;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     private FloatingActionButton floatingActionButton;
     private Button showNotification;
+    private Button btnTapic;
     Uri path = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     NotificationHelper notificationHelper;
 
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_activity_main);
+        Pushe.initialize(this,true);
 
 
         Intent intent = new Intent(G.context, Task.class);
@@ -73,10 +76,7 @@ public class MainActivity extends AppCompatActivity {
         setTabOption();
         setNavigationViewAndFloating();
         notificationHelper = new NotificationHelper(context);
-        notificationHelper.ListQuoteAndSendNotification();
-
-
-
+       // notificationHelper.ListQuoteAndSendNotification();
 
 
 
@@ -132,6 +132,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });*/
+       Button btnTapic = (Button)findViewById(R.id.btnTapic);
+       btnTapic.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               if (Pushe.isPusheInitialized(getApplicationContext())){
+                   Pushe.subscribe(getApplicationContext(),"ozveeat dar site");
+               }
+           }
+       });
 
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

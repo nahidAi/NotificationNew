@@ -2,17 +2,18 @@ package test.notification.com.notification;
 
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
 
 import java.util.Random;
+
+import br.com.goncalves.pugnotification.notification.PugNotification;
+
+import static android.app.Notification.DEFAULT_VIBRATE;
 
 public class NotificationHelper {
     private final Context mContext;
@@ -46,8 +47,39 @@ public class NotificationHelper {
         PendingIntent pi = PendingIntent.getActivity(mContext, 0, intent, 0);
         PendingIntent pi1 = PendingIntent.getActivity(mContext, 0, intent1, 0);
 
+        PugNotification.with(mContext)
+                .load()
+                .identifier(1)
+                .title(quote.getName())
+                .message(quote.getMore())
+                .bigTextStyle(quote.content)
+                .smallIcon(R.drawable.heart)
+                .largeIcon(R.drawable.arrow_right)
+                .flags(Notification.DEFAULT_ALL)
+                .button(R.drawable.email, "email", pi)
+                .button(R.drawable.internet_explorer, "internet", pi1)
+                .click(Main3Activity.class)
+                .dismiss(Main3Activity.class)
+                .color(R.color.colorAccent)
+                .ticker("ticker")
+                .when(System.currentTimeMillis())
+                .vibrate(new long[]{DEFAULT_VIBRATE})
+                .lights(0xff00ff00, 300, 1000)
+                .sound(path)
+                .autoCancel(true)
+                .simple()
+                .build();
 
-        Notification notification = new NotificationCompat.Builder(mContext)
+
+
+
+
+
+
+
+
+
+       /* Notification notification = new NotificationCompat.Builder(mContext)
                 .setTicker("نوتیف")
                 .setContentTitle(quote.getName())
                 .setContentText("این یک تست است")
@@ -61,7 +93,7 @@ public class NotificationHelper {
                 .addAction(R.drawable.arrow_right, "Open Site", pi1)
                 .build();
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
+        notificationManager.notify(0, notification);*/
 
 
     }
